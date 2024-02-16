@@ -1,0 +1,47 @@
+﻿@using TestEShopMacNet7.Models.Product
+@model IEnumerable<Product>
+@inject TestEShopMacNet7.Data.ApplicationDbContext dbContext
+
+@{
+    ViewData["Title"] = "Product manager";
+}
+
+<p class="display-4 text-center my-6">Správce produktů</p>
+
+<div class="row justify-content-left">
+    <div class="col">
+        <a class="btn btn-secondary" asp-controller="Product" asp-action="Create">Vytvořit nový produkt</a>
+    </div>
+</div>
+<div class="row">
+    <table class="table table-responsive-lg table-striped">
+        <thead>
+            <tr>
+                <th class="text-start col-2" scope="col" nowrap>Název produktu</th>
+                <th class="text-start col-2" scope="col" nowrap>Cena</th>
+                <th class="text-start col-2" scope="col" nowrap>Cena po slevě</th>
+                <th class="text-start col-2" scope="col" nowrap>Na skladě</th>
+                <th class="text-start col-2" scope="col">Akce</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in dbContext.Products)
+            {
+                <tr id="@product.Name">
+                    <td>@product.Name</td>
+                    <td>@product.Price</td>
+                    <td>@product.SalePrice</td>
+                    <td>@product.InStock</td>
+                    <td>
+                        <div class="button-group">
+                            <a class="btn btn-primary" asp-controller="Product" asp-action="Edit" asp-route-Name="@product.Name" asp-route-Id="@product.Id">Upravit</a>
+                            <a class="btn btn-danger" onclick="RemoveProduct(`@product.Name`)">Vymazat</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script src="/js/RemoveProduct.js"></script>

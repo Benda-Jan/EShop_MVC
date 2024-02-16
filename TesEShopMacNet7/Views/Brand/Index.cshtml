@@ -1,0 +1,41 @@
+﻿@using TestEShopMacNet7.Models.Product
+@model IEnumerable<Brand>
+@inject TestEShopMacNet7.Data.ApplicationDbContext dbContext
+
+@{
+    ViewData["Title"] = "Brand manager";
+}
+
+<p class="display-4 text-center my-6">Správce značek</p>
+
+<div class="row justify-content-left">
+    <div class="col">
+        <a class="btn btn-secondary" asp-controller="Brand" asp-action="Create">Vytvořit novou značku</a>
+    </div>
+</div>
+<div class="row">
+    <table class="table table-responsive-lg table-striped">
+        <thead>
+            <tr>
+                <th class="text-start col-6" scope="col" nowrap>Název značky</th>
+                <th class="text-start col-6" scope="col">Akce</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var brand in dbContext.Brands)
+            {
+                <tr id="@brand.Id">
+                    <td>@brand.Name</td>
+                    <td>
+                        <div class="btn-group">
+                            <a class="btn btn-primary" asp-controller="Brand" asp-action="Edit" asp-route-Id="@brand.Id">Upravit</a>
+                            <a class="btn btn-danger" onclick="RemoveBrand(`@brand.Id`)">Vymazat</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script src="/js/RemoveBrand.js"></script>

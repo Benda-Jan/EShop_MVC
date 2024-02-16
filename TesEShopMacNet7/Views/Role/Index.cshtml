@@ -1,0 +1,54 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using TestEShopMacNet7.Models.Account
+@model IEnumerable<IdentityRole>
+@inject RoleManager<IdentityRole> roleManager
+@inject UserManager<ExtendedUser> userManager
+
+@{
+    ViewData["Title"] = "Role manager";
+}
+
+<p class="display-4 text-center my-6">Správce rolí</p>
+
+<div class="row justify-content-left">
+    <div class="col">
+        <a class="btn btn-secondary" asp-controller="Role" asp-action="Create">Vytvořit novou roli</a>
+    </div>
+</div>
+<div class="row">
+    <table class="table table-responsive-lg table-striped">
+        <thead>
+            <tr>
+                <th class="text-center col-1" scope="col" nowrap>Název role</th>
+                <th class="text-center col-10" scope="col">Uživatelé</th>
+                <th class="text-center col-2" scope="col">Akce</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var role in roleManager.Roles)
+            {
+                if (role.Name is not null)
+                {
+                    List<string> names = new List<string>();
+                    foreach (var user in userManager.Users.ToList())
+                    {
+                        if (user is not null && user.UserName is not null && await userManager.IsInRoleAsync(user, role.Name))
+                            names.Add(user.UserName);
+                    }
+                    <tr id="@role.Name">
+                        <td>@role.Name</td>
+                        <td>@string.Join(", ", names)</td>
+                        <td>
+                            <div class="btn-group">
+                                <a class="btn btn-primary" asp-controller="Role" asp-action="Edit" asp-route-Id="@role.Id">Upravit</a>
+                                <a class="btn btn-danger" onclick="RemoveRole(`@role.Name`)">Vymazat</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<script src="/js/RemoveRole.js"></script>

@@ -1,0 +1,151 @@
+@using Microsoft.AspNetCore.Identity
+@using TestEShopMacNet7.Models.Account
+@inject UserManager<ExtendedUser> UserManager
+
+@model TestEShopMacNet7.Models.Account.ExtendedUser
+
+<p class="display-4 text-center my-2">Nastavení účtu</p>
+<hr />
+<div class="my-6"></div>
+<div class="row">
+    <div class="col-2">
+        <div class="list-group" role="tablist">
+            <a class="list-group-item list-group-item-action active" id="list-userdata-list" data-bs-toggle="list" href="#list-userdata" role="tab" aria-controls="Uživatelské údaje">Uživatelské údaje</a>
+            <a class="list-group-item list-group-item-action" id="list-billing-address-list" data-bs-toggle="list" href="#list-billing-address" role="tab" aria-controls="Fakturační údaje">Fakturační údaje</a>
+            <a class="list-group-item list-group-item-action" id="list-payment-list" data-bs-toggle="list" href="#list-payment" role="tab" aria-controls="Platební údaje">Platební údaje</a>
+            <a class="list-group-item list-group-item-action" id="list-remove-list" data-bs-toggle="list" href="#list-remove" role="tab" aria-controls="Smazat">Smazat</a>
+        </div>
+    </div>
+    <div class="col-10">
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="list-userdata" role="tabpanel" aria-labelledby="list-userdata-list">
+                <form asp-action="NewUserName">
+                    <div class="row @(@Model?.UserName is not null ? "" : "d-none") my-2">
+                        <div class="col-4 text-end">
+                            <label class="align-middle" for="username-old">Aktuální uživatelské jméno</label>
+                        </div>
+                        <div class="col-4 text-start">
+                            <input class="align-middle" type="text" name="username-old" value="@Model?.UserName" disabled />
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-4 text-end">
+                            <label class="align-middle" for="newUserName">Nové uživatelské jméno</label>
+                        </div>
+                        <div class="col-4 text-start">
+                            <input class="align-middle" type="text" name="newUserName" />
+                        </div>
+                        <input class="col-1 btn btn-primary mx-2" type="submit" value="Uložit">
+                    </div>
+                </form>
+                <hr />
+                <form asp-action="NewEmail">
+                    <div class="row @(@Model?.Email is not null ? "" : "d-none") my-2">
+                        <div class="col-4 text-end">
+                            <label class="align-middle" for="email-old">Aktuální e-mailová adresa</label>
+                        </div>
+                        <div class="col-4 text-start">
+                            <input class="align-middle" type="email" name="email-old" value="@Model?.Email" disabled />
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-4 text-end">
+                            <label class="align-middle" for="newEmail">Nová e-mailová adresa</label>
+                        </div>
+                        <div class="col-4 text-start">
+                            <input class="align-middle" type="email" name="newEmail" />
+                        </div>
+                        <input class="col-1 btn btn-primary mx-2" type="submit" value="Uložit">
+                    </div>
+                </form>
+                <hr />
+                <form asp-action="NewPhoneNumber">
+                    <div class="row @(@Model?.PhoneNumber is not null ? "" : "d-none") my-2">
+                        <div class="col-4 text-end">
+                            <label class="align-middle" for="phone-number-old">Aktuální telefonní číslo</label>
+                        </div>
+                        <div class="col-4 text-start">
+                            <input class="align-middle" type="number" name="phone-number-old" value="@Model?.PhoneNumber" disabled />
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-4 text-end">
+                            <label class="align-middle" for="newPhoneNumber">Nové telefonní číslo</label>
+                        </div>
+                        <div class="col-4 text-start">
+                            <input class="align-middle" type="number" name="newPhoneNumber" />
+                        </div>
+                        <input class="col-1 btn btn-primary mx-2" type="submit" value="Uložit">
+                    </div>
+                </form>
+                <hr />
+                <form asp-action="NewPassword">
+                    <div class="row my-2">
+                        <div class="col-4 text-end">
+                            <label class="align-middle" for="oldPassword">Aktuální heslo</label>
+                        </div>
+                        <div class="col-4 text-start">
+                            <input class="align-middle" type="password" name="oldPassword" />
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-4 text-end">
+                            <label class="align-middle" for="newPassword">Nové heslo</label>
+                        </div>
+                        <div class="col-4 text-start">
+                            <input class="align-middle" type="password" name="newPassword" />
+                        </div>
+                        <input class="col-1 btn btn-primary mx-2" type="submit" value="Uložit">
+                    </div>
+                </form>
+                <hr />
+            </div>
+            <div class="tab-pane fade text-center" id="list-billing-address" role="tabpanel" aria-labelledby="list-billing-address-list">
+                <form asp-action="NewBillingInfo">
+                    <div class="row my-2">
+                        <div class="col-4 text-end">
+                            <label class="align-middle" for="Street">Ulice</label>
+                        </div>
+                        <div class="col-4 text-start">
+                            <input class="align-middle" type="text" value="@Model?.Street" disabled />
+                        </div>
+                        <div class="col-4 text-start">
+                            <input class="align-middle" type="text" name="Street" />
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-4 text-end">
+                            <label class="align-middle" for="City">Město</label>
+                        </div>
+                        <div class="col-4 text-start">
+                            <input class="align-middle" type="text" value="@Model?.City" disabled />
+                        </div>
+                        <div class="col-4 text-start">
+                            <input class="align-middle" type="text" name="City" />
+                        </div>
+                    </div>
+                    <div class="row my-2">
+                        <div class="col-4 text-end">
+                            <label class="align-middle" for="PostalCode">PSČ</label>
+                        </div>
+                        <div class="col-4 text-start">
+                            <input class="align-middle" type="number" value="@Model?.PostalCode" disabled />
+                        </div>
+                        <div class="col-4 text-start">
+                            <input class="align-middle" type="text" name="PostalCode" />
+                        </div>
+                    </div>
+                    <input class="col-1 btn btn-primary mx-2" type="submit" value="Uložit">
+                </form>
+            </div>
+            <div class="tab-pane fade" id="list-payment" role="tabpanel" aria-labelledby="list-payment-list">
+                Obsah záložky pro platebni údaje
+            </div>
+            <div class="tab-pane fade text-center" id="list-remove" role="tabpanel" aria-labelledby="list-remove-list">
+                <a class="btn btn-danger" onclick="RemoveUser(`@User?.Identity?.Name`)">Smazat účet</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/RemoveUser.js"></script>

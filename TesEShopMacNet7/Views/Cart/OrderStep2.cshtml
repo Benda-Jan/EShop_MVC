@@ -1,0 +1,51 @@
+﻿@using TestEShopMacNet7.Models.Cart
+@model Order
+
+@{
+    ViewData["Title"] = "Order2";
+}
+
+<p class="display-4 text-center my-6">Platební metoda</p>
+
+<form>
+    <input name="TempItemIds" value="@String.Join(";",Model.ItemIds)" hidden />
+    <input name="Street" value="@Model.Street" hidden />
+    <input name="City" value="@Model.City" hidden />
+    <input name="PostalCode" value="@Model.PostalCode" hidden />
+    <div class="row my-2">
+        <div class="col-4 text-end">
+            <label class="align-middle" for="PaymentMethod">Platební metoda</label>
+        </div>
+        <div class="col-4 text-start h4">
+            <select name="PaymentMethod">
+                @if (Model.PaymentMethod == "Card")
+                {
+                    <option value="Card" selected>Kartou</option>
+                }
+                else
+                {
+                    <option value="Card">Kartou</option>
+                }
+                @if (Model.PaymentMethod == "Transfer")
+                {
+                    <option value="Transfer" selected>Převodem</option>
+                }
+                else
+                {
+                    <option value="Transfer">Převodem</option>
+                }
+                @if (Model.PaymentMethod == "Cash")
+                {
+                    <option value="Cash" selected>Na dobírku</option>
+                }
+                else
+                {
+                    <option value="Cash">Na dobírku</option>
+                }
+            </select>
+        </div>
+    </div>
+    <button class="btn btn-primary" asp-controller="Cart" asp-action="OrderStep1" type="submit">Přechozí krok</button>
+    <button class="btn btn-primary" asp-controller="Cart" asp-action="OrderStep3" type="submit">Další krok</button>
+</form>
+

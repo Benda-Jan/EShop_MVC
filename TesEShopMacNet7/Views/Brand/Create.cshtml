@@ -1,0 +1,22 @@
+﻿@model TestEShopMacNet7.Models.Product.Brand
+
+@{
+    ViewData["Title"] = "Create brand";
+}
+
+<p class="display-4 text-center my-6">Vytvořit novou značku</p>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div class="form-group my-2">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-primary" type="submit">Vytvořit</button>
+            </div>
+        </form>
+    </div>
+</div>

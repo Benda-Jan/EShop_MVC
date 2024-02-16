@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using TestEShopMacNet7.Models.Account
+@inject SignInManager<ExtendedUser> SignInManager
+@inject UserManager<ExtendedUser> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="Account" asp-action="AccountSettings" asp-route-Id="@(((await UserManager.FindByEmailAsync(User?.Identity?.Name ?? "")) ?? (await UserManager.FindByNameAsync(User?.Identity?.Name ?? "")))?.Id)" title="Manage">Nastavení</a>
+        </li>
+        <li class="nav-item">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="nav-link btn btn-link text-dark">Odhlásit</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Registrovat</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Přihlásit se</a>
+        </li>
+    }
+</ul>
+

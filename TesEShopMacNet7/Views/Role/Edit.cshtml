@@ -1,0 +1,46 @@
+﻿@model TestEShopMacNet7.Models.Role.RoleViewModel; 
+
+<p class="display-4 text-center my-6">Úprava role - @Model.Name</p>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Name" />
+    <input type="hidden" asp-for="Id" />
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="col-6" scope="col">Vymazat roli</th>
+                <th class="col-6" scope="col">Přidat roli</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @await foreach (var user in Model.Members())
+                    {
+                        <div class="flex">
+                            <input type="checkbox" name="RemoveIds" value="@user.Id">
+                            <label class="align-middle" for="@user.Id">@user.UserName</label>
+                        </div>
+                    }
+                </td>
+                <td>
+                    @await foreach (var user in Model.NonMembers())
+                    {
+                        <div class="flex">
+                            <input type="checkbox" name="AddIds" value="@user.Id">
+                            <label class="align-middle" for="@user.Id">@user.UserName</label>
+                        </div>
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="text-center">
+        <button class="btn btn-primary" type="submit">Uložit</button>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Zpět na seznam</a>
+</div>
+

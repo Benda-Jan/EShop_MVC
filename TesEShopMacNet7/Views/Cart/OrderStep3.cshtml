@@ -1,0 +1,72 @@
+﻿@using TestEShopMacNet7.Models.Cart
+@model Order
+@inject TestEShopMacNet7.Data.ApplicationDbContext dbContext
+
+@{
+    ViewData["Title"] = "Order3";
+}
+
+<p class="display-4 text-center my-6">Rekapitulace objednávky</p>
+
+<table class="table table-responsive-lg">
+    <thead>
+        <tr>
+            <th class="text-start col-6" scope="col" nowrap>Název produktu</th>
+            <th class="text-start col-3" scope="col" nowrap>Cena</th>
+            <th class="text-start col-3" scope="col" nowrap>Počet</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model?.ItemIds?.Count(); i++)
+            {
+            var cartItem = dbContext.CartItems.Where(ci => ci.Id == @Model.ItemIds[i]).FirstOrDefault();
+            if (cartItem is not null)
+                {
+                <tr name="Items" id="@cartItem.ProductId">
+                    <td>@cartItem.ProductName</td>
+                    <td>@cartItem.Price</td>
+                    <td>@cartItem.Count</td>
+                </tr>
+                }
+            }
+    </tbody>
+</table>
+<hr />
+<form>
+    <input name="TempItemIds" value="@String.Join(";", Model?.ItemIds)" hidden />
+    <div class="row my-2">
+        <div class="col-4 text-end">
+            <label class="align-middle" for="Street">Ulice</label>
+        </div>
+        <div class="col-4 text-start">
+            <input name="Street" value="@Model.Street" readonly />
+        </div>
+    </div>
+    <div class="row my-2">
+        <div class="col-4 text-end">
+            <label class="align-middle" for="City">Město</label>
+        </div>
+        <div class="col-4 text-start">
+            <input name="City" value="@Model.City" readonly />
+        </div>
+    </div>
+    <div class="row my-2">
+        <div class="col-4 text-end">
+            <label class="align-middle" for="PostalCode">PSČ</label>
+        </div>
+        <div class="col-4 text-start">
+            <input name="PostalCode" value="@Model.PostalCode" readonly />
+        </div>
+    </div>
+    <div class="row my-2">
+        <div class="col-4 text-end">
+            <label class="align-middle" for="PaymentMethod">Platební metoda</label>
+        </div>
+        <div class="col-4 text-start">
+            <input name="PaymentMethod" value="@Model.PaymentMethod" readonly />
+        </div>
+    </div>
+    <button class="btn btn-primary" asp-controller="Cart" asp-action="OrderStep2" type="submit">Přechozí krok</button>
+    <button class="btn btn-primary" asp-controller="Cart" asp-action="OrderFinished" type="submit">Závazně objednat</button>
+</form>
+

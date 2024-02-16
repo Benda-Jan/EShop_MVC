@@ -1,0 +1,43 @@
+﻿@using TestEShopMacNet7.Models.Product
+@model IEnumerable<Category>
+@inject TestEShopMacNet7.Data.ApplicationDbContext dbContext
+
+@{
+    ViewData["Title"] = "Category manager";
+}
+
+<p class="display-4 text-center my-6">Správce kategorií</p>
+
+<div class="row justify-content-left">
+    <div class="col">
+        <a class="btn btn-secondary" asp-controller="Category" asp-action="Create">Vytvořit novou kategorii</a>
+    </div>
+</div>
+<div class="row">
+    <table class="table table-responsive-lg table-striped">
+        <thead>
+            <tr>
+                <th class="text-start col-6" scope="col" nowrap>Interní název kategorie</th>
+                <th class="text-start col-6" scope="col" nowrap>Zobrazený název kategorie</th>
+                <th class="text-start col-6" scope="col">Akce</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var category in dbContext.Categories)
+            {
+                <tr id="@category.Id">
+                    <td>@category.InternalName</td>
+                    <td>@category.DisplayName</td>
+                    <td>
+                        <div class="btn-group">
+                            <a class="btn btn-primary" asp-controller="Category" asp-action="Edit" asp-route-Id="@category.Id">Upravit</a>
+                            <a class="btn btn-danger" onclick="RemoveCategory(`@category.Id`)">Vymazat</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script src="/js/RemoveCategory.js"></script>

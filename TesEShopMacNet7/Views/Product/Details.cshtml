@@ -1,0 +1,46 @@
+@model TestEShopMacNet7.Models.Product.Product
+@inject TestEShopMacNet7.Data.ApplicationDbContext dbContext
+
+@{
+    ViewData["Title"] = "Edit product";
+}
+
+<div class="row gx-6 row-cols-1 row-cols-md-2">
+    <div class="col">
+        <img class="card-img-top" src="https://www.itnetwork.cz/images/5/css/bootstrap/itnetwork_tshirt.jpg" alt="Tričko ITnetwork">
+    </div>
+    <div class="flex-vertical col">
+        <div class="row">
+            <p class="display-2 text-center my-6">@Model.Name</p>
+        </div>
+        <div class="row mb-auto">
+            <textarea class="mb-2 text-muted h-5 overflow-hidden border-0" style="resize:none;" disabled>@Model.Description</textarea>
+        </div>
+        <div class="row mt-auto mb-1">
+            <div class="col-7 text-center fw-bolder h5">
+                @{string InSale = (Model.SalePrice > 0 && Model.Price > Model.SalePrice ? "text-muted text-decoration-line-through no_decoration" : "no_decoration");}
+                @if (@Model.SalePrice > 0 && @Model.Price > @Model.SalePrice)
+                {
+                    <span class="@InSale">@Model.Price Kč</span>
+                    @(Model.SalePrice.ToString() + "Kč")
+                }
+                else
+                {
+                    @(Model.Price.ToString() + "Kč")
+                }
+            </div>
+            <div class="col-5">
+                <div class="button-group">
+                    <button class="btn btn-primary @(Model.InStock > 0 ? "" : "disabled")" onclick="AddToCart(`@Model.Id`)" type="reset">Do košíku</button>
+                    <button href="#" class="btn @(Model.InStock > 0 ? "btn-success" : "btn-danger")">@(Model.InStock > 0 ? "Skladem" : "Není skladem")</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="Home" asp-action="Index">Zpět na seznam</a>
+</div>
+
+<script src="/js/AddToCart.js"></script>

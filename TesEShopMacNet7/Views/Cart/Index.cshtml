@@ -1,0 +1,57 @@
+﻿@using TestEShopMacNet7.Models.Cart
+@using TestEShopMacNet7.Models.Account
+@model IEnumerable<CartItem>
+@inject TestEShopMacNet7.Data.ApplicationDbContext dbContext
+@inject Microsoft.AspNetCore.Identity.UserManager<ExtendedUser> userManager
+
+@{
+    ViewData["Title"] = "Cart";
+}
+
+<p class="display-4 text-center my-6">Košík</p>
+
+<form asp-action="CreateOrder">
+    <div class="row">
+        <table class="table table-responsive-lg table-striped">
+            <thead>
+                <tr>
+                    <th class="text-start col" scope="col" nowrap>Název produktu</th>
+                    <th class="text-start col-2" scope="col" nowrap>Cena</th>
+                    <th class="text-start col-2" scope="col" nowrap>Počet</th>
+                    <th class="text-start col-2" scope="col">Akce</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cartItem in Model ?? new List<CartItem>())
+                {
+                    <tr name="Items" id="@cartItem.ProductId">
+                        <input name="ItemIds" value="@cartItem.Id" hidden />
+                        <td>@cartItem.ProductName</td>
+                        <td>@cartItem.Price</td>
+                        <td>@cartItem.Count</td>
+                        <td>
+                            <div class="button-group">
+                                <a class="btn btn-primary" onclick="AddToCart(`@cartItem.ProductId`)">Přidat</a>
+                                <a class="btn btn-danger" onclick="RemoveFromCart(`@cartItem.ProductId`)">Odebrat</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="row @(Model?.Count() == 0 ? "invisible" : "")">
+        <div class="col fw-bold h4 mr-auto">
+            @{ var userId = (await userManager.FindByNameAsync(User?.Identity?.Name ?? ""))?.Id;}
+            Celková cena: @Enumerable.Sum(dbContext.CartItems.Where(c => c.UserId == userId).Select(c => c.Price * c.Count)) Kč
+        </div>
+        <div class="col ml-auto justify-content-end">
+            <button class="btn btn-primary h4" type="submit">
+                Objednat
+            </button>
+        </div>
+    </div>
+</form>
+
+<script src="/js/AddToCart.js"></script>
+<script src="/js/RemoveFromCart.js"></script>
