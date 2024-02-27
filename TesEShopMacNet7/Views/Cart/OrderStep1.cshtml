@@ -10,36 +10,40 @@
 }
 
 <p class="display-4 text-center my-6">Dodací údaje</p>
-
-<form>
-    @{var user = dbContext?.Users.Where(u => User != null && User.Identity != null && u.UserName == (User.Identity.Name ?? "")).FirstOrDefault();}
-    <input name="TempItemIds" value="@String.Join(";", Model?.ItemIds)" hidden />
-    <input name="PaymentMethod" value="@Model.PaymentMethod" hidden />
-    <div class="row my-2">
-        <div class="col-4 text-end">
-            <label class="align-middle" for="Street">Ulice</label>
+<hr />
+<div class="text-center">
+    <form>
+        @{var user = dbContext?.Users.Where(u => User != null && User.Identity != null && u.UserName == (User.Identity.Name ?? "")).FirstOrDefault();}
+        <input name="TempItemIds" value="@String.Join(";", Model?.ItemIds)" hidden />
+        <input name="PaymentMethod" value="@Model.PaymentMethod" hidden />
+        <div class="row my-2">
+            <div class="col-6 text-end h5">
+                <label class="align-middle" for="Street">Ulice</label>
+            </div>
+            <div class="col-6 text-start h5">
+                <input class="align-middle" name="Street" type="text" value="@(Model.Street != String.Empty ? Model.Street : user?.Street)" />
+            </div>
         </div>
-        <div class="col-4 text-start">
-            <input class="align-middle" name="Street" type="text" value="@(Model.Street != String.Empty ? Model.Street : user?.Street)" />
+        <div class="row my-2">
+            <div class="col-6 text-end h5">
+                <label class="align-middle" for="City">Město</label>
+            </div>
+            <div class="col-6 text-start h5">
+                <input class="align-middle" name="City" type="text" value="@(Model.City != String.Empty ? Model.City : user?.City)" />
+            </div>
         </div>
-    </div>
-    <div class="row my-2">
-        <div class="col-4 text-end">
-            <label class="align-middle" for="City">Město</label>
+        <div class="row my-2">
+            <div class="col-6 text-end h5">
+                <label class="align-middle" for="PostalCode">PSČ</label>
+            </div>
+            <div class="col-6 text-start h5">
+                <input class="align-middle" name="PostalCode" type="number" value="@(Model.PostalCode <= 0 ? user?.PostalCode : Model.PostalCode)" />
+            </div>
         </div>
-        <div class="col-4 text-start">
-            <input class="align-middle" name="City" type="text" value="@(Model.City != String.Empty ? Model.City : user?.City)" />
+        <div class="text-center mt-5">
+            <button class="btn btn-primary" asp-controller="Cart" asp-action="Index" type="submit">Zpět do košíku</button>
+            <button class="btn btn-primary" asp-controller="Cart" asp-action="OrderStep2" type="submit">Další krok</button>
         </div>
-    </div>
-    <div class="row my-2">
-        <div class="col-4 text-end">
-            <label class="align-middle" for="PostalCode">PSČ</label>
-        </div>
-        <div class="col-4 text-start">
-            <input class="align-middle" name="PostalCode" type="number" value="@(Model.PostalCode <= 0 ? user?.PostalCode : Model.PostalCode)" />
-        </div>
-    </div>
-    <button class="btn btn-primary" asp-controller="Cart" asp-action="Index" type="submit">Zpět do košíku</button>
-    <button class="btn btn-primary" asp-controller="Cart" asp-action="OrderStep2" type="submit">Další krok</button>
-</form>
+    </form>
+</div>
 

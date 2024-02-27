@@ -7,26 +7,29 @@
 }
 
 <p class="display-4 text-center my-6">Rekapitulace objednávky</p>
-
+<hr />
 <table class="table table-responsive-lg">
     <thead>
         <tr>
-            <th class="text-start col-6" scope="col" nowrap>Název produktu</th>
+            <th class="text-start col-5" scope="col" nowrap>Název produktu</th>
             <th class="text-start col-3" scope="col" nowrap>Cena</th>
-            <th class="text-start col-3" scope="col" nowrap>Počet</th>
+            <th class="text-start col-1" scope="col" nowrap>Počet</th>
+            <th class="text-start col-3" scope="col" nowrap>Celková cena</th>
         </tr>
     </thead>
     <tbody>
         @for (int i = 0; i < Model?.ItemIds?.Count(); i++)
             {
-            var cartItem = dbContext.CartItems.Where(ci => ci.Id == @Model.ItemIds[i]).FirstOrDefault();
-            if (cartItem is not null)
+                var cartItem = dbContext.CartItems.Where(ci => ci.Id == @Model.ItemIds[i]).FirstOrDefault();
+                if (cartItem is not null)
                 {
                 <tr name="Items" id="@cartItem.ProductId">
                     <td>@cartItem.ProductName</td>
-                    <td>@cartItem.Price</td>
+                    <td>@cartItem.Price Kč</td>
                     <td>@cartItem.Count</td>
-                </tr>
+                    <td>@(cartItem.Count* cartItem.Price) Kč</td>
+  
+                  </tr>
                 }
             }
     </tbody>
@@ -66,7 +69,9 @@
             <input name="PaymentMethod" value="@Model.PaymentMethod" readonly />
         </div>
     </div>
-    <button class="btn btn-primary" asp-controller="Cart" asp-action="OrderStep2" type="submit">Přechozí krok</button>
-    <button class="btn btn-primary" asp-controller="Cart" asp-action="OrderFinished" type="submit">Závazně objednat</button>
+    <div class="text-center mt-5">
+        <button class="btn btn-primary" asp-controller="Cart" asp-action="OrderStep2" type="submit">Přechozí krok</button>
+        <button class="btn btn-primary" asp-controller="Cart" asp-action="OrderFinished" type="submit">Závazně objednat</button>
+    </div>
 </form>
 
